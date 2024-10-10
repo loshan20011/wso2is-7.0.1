@@ -63,9 +63,9 @@ ENV JAVA_HOME=/opt/java/openjdk \
 # Set Docker image build arguments.
 # Build arguments for user/group configurations.
 ARG USER=wso2carbon
-ARG USER_ID=10010
+ARG USER_ID=10002
 ARG USER_GROUP=wso2
-ARG USER_GROUP_ID=10010
+ARG USER_GROUP_ID=10002
 ARG USER_HOME=/home/${USER}
 # Build arguments for WSO2 product installation.
 ARG WSO2_SERVER_NAME=wso2is
@@ -125,7 +125,7 @@ ADD --chown=wso2carbon:wso2 https://repo1.maven.org/maven2/dnsjava/dnsjava/${DNS
 ADD --chown=wso2carbon:wso2 http://maven.wso2.org/nexus/content/repositories/releases/org/wso2/carbon/kubernetes/artifacts/kubernetes-membership-scheme/${K8S_MEMBERSHIP_SCHEME_VERSION}/kubernetes-membership-scheme-${K8S_MEMBERSHIP_SCHEME_VERSION}.jar ${WSO2_SERVER_HOME}/repository/components/dropins
 
 # Set the user and work directory.
-USER 10010
+USER ${USER_ID}
 WORKDIR ${USER_HOME}
 
 # Set environment variables.
