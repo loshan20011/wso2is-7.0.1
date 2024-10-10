@@ -19,7 +19,7 @@
 # set base Docker image to Ubuntu 20.04 Docker image
 FROM ubuntu:20.04
 
-LABEL maintainer="WSO2 Docker Maintainers <dev@wso2.org>" \
+-LABEL maintainer="WSO2 Docker Maintainers <dev@wso2.org>" \
       com.wso2.docker.source="https://github.com/wso2/docker-is/releases/tag/v7.0.0.1"
 
 #Install JDK Dependencies
@@ -63,7 +63,7 @@ ENV JAVA_HOME=/opt/java/openjdk \
 # set Docker image build arguments
 # build arguments for user/group configurations
 ARG USER=wso2carbon
-ARG USER_ID=10001
+ARG USER_ID=10010
 ARG USER_GROUP=wso2
 ARG USER_GROUP_ID=802
 ARG USER_HOME=/home/${USER}
@@ -112,13 +112,13 @@ RUN \
         wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the WSO2IS zip file to the Docker image
-COPY wso2is-7.0.1.zip /tmp/wso2is-7.0.1.zip
-
-# Unzip the WSO2IS file
-RUN unzip -d ${USER_HOME} /tmp/wso2is-7.0.1.zip \
+# Copy the WSO2IS zip file to the Docker image & unzip it
+RUN wget -O /tmp/wso2is-7.0.1.zip https://drive.google.com/file/d/1tTq6lp1o6Pt9nzl31n0IO-RZYxkjyZ_e/view?usp=sharing \
+    && echo "expected_sha256_hash_value /tmp/wso2is-7.0.1.zip" | sha256sum -c - \
+    && unzip -d ${USER_HOME} /tmp/wso2is-7.0.1.zip \
     && chown wso2carbon:wso2 -R ${WSO2_SERVER_HOME} \
     && rm -f /tmp/wso2is-7.0.1.zip
+
 
 # add libraries for Kubernetes membership scheme based clustering
 ADD --chown=wso2carbon:wso2 https://repo1.maven.org/maven2/dnsjava/dnsjava/${DNS_JAVA_VERSION}/dnsjava-${DNS_JAVA_VERSION}.jar ${WSO2_SERVER_HOME}/repository/components/lib
