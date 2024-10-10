@@ -118,6 +118,7 @@ RUN \
     wget -O ${WSO2_SERVER}.zip "${WSO2_SERVER_DIST_URL}" \
     && unzip -d ${USER_HOME} ${WSO2_SERVER}.zip \
     && chown wso2carbon:wso2 -R ${WSO2_SERVER_HOME} \
+    && chown 755 -R ${WSO2_SERVER_HOME} \
     && rm -f ${WSO2_SERVER}.zip
 
 # Add libraries for Kubernetes membership scheme based clustering.
