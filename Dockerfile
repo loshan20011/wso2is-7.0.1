@@ -69,12 +69,13 @@ ARG USER_GROUP_ID=802
 ARG USER_HOME=/home/${USER}
 # build arguments for WSO2 product installation
 ARG WSO2_SERVER_NAME=wso2is
-ARG WSO2_SERVER_VERSION=7.0.1
+ARG WSO2_SERVER_VERSION=7.0.0
 # Hosted wso2is-7.0.0 distribution URL.
 ARG WSO2_SERVER_DIST_URL=""
 ARG WSO2_SERVER_REPOSITORY=product-is
 ARG WSO2_SERVER=${WSO2_SERVER_NAME}-${WSO2_SERVER_VERSION}
 ARG WSO2_SERVER_HOME=${USER_HOME}/${WSO2_SERVER}
+ARG WSO2_SERVER_DIST_URL=https://github.com/wso2/${WSO2_SERVER_REPOSITORY}/releases/download/v${WSO2_SERVER_VERSION}/${WSO2_SERVER}.zip
 # build arguments for external artifacts
 ARG DNS_JAVA_VERSION=2.1.8
 ARG K8S_MEMBERSHIP_SCHEME_VERSION=1.0.10
@@ -113,11 +114,11 @@ RUN \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the WSO2IS zip file to the Docker image & unzip it
-RUN wget -O /tmp/wso2is-7.0.1.zip "https://drive.google.com/uc?export=download&id=1tTq6lp1o6Pt9nzl31n0IO-RZYxkjyZ_e" \
-    && unzip -d ${USER_HOME} /tmp/wso2is-7.0.1.zip \
+RUN \
+    wget -O ${WSO2_SERVER}.zip "${WSO2_SERVER_DIST_URL}" \
+    && unzip -d ${USER_HOME} ${WSO2_SERVER}.zip \
     && chown wso2carbon:wso2 -R ${WSO2_SERVER_HOME} \
-    && rm -f /tmp/wso2is-7.0.1.zip
-
+    && rm -f ${WSO2_SERVER}.zip
 
 # add libraries for Kubernetes membership scheme based clustering
 ADD --chown=wso2carbon:wso2 https://repo1.maven.org/maven2/dnsjava/dnsjava/${DNS_JAVA_VERSION}/dnsjava-${DNS_JAVA_VERSION}.jar ${WSO2_SERVER_HOME}/repository/components/lib
