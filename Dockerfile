@@ -113,7 +113,7 @@ RUN \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the WSO2IS zip file to the Docker image & unzip it
-RUN wget -O /tmp/wso2is-7.0.1.zip https://drive.google.com/file/d/1tTq6lp1o6Pt9nzl31n0IO-RZYxkjyZ_e/view?usp=sharing \
+RUN wget -O /tmp/wso2is-7.0.1.zip "https://drive.google.com/uc?export=download&id=1tTq6lp1o6Pt9nzl31n0IO-RZYxkjyZ_e" \
     && unzip -d ${USER_HOME} /tmp/wso2is-7.0.1.zip \
     && chown wso2carbon:wso2 -R ${WSO2_SERVER_HOME} \
     && rm -f /tmp/wso2is-7.0.1.zip
